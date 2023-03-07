@@ -1,0 +1,26 @@
+{
+  "name": "evolutionphp/database",
+  "description": "Codeigniter 3 standalone database (MySQL).",
+  "license": "MIT",
+  "type": "library",
+  "keywords": [
+    "mysql",
+    "database",
+    "codeigniter"
+  ],
+  "authors": [
+    {
+      "name": "Andres Mendoza",
+      "homepage": "https://twitter.com/EvolutionPHP"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "EvolutionPHP\\Database\\": "src"
+    }
+  },
+  "require": {
+    "php": ">=7.4",
+    "evolutionphp/exceptions": ">=1.0"
+  }
+}
