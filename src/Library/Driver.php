@@ -54,7 +54,7 @@ class Driver extends DB_query_builder {
      *
      * Has to be preserved without being assigned to $conn_id.
      *
-     * @var	MySQLi
+     * @var	\MySQLi
      */
     protected $_mysqli;
 
@@ -64,7 +64,7 @@ class Driver extends DB_query_builder {
      * Database connection
      *
      * @param	bool	$persistent
-     * @return	object
+     * @return	object|bool
      */
     public function db_connect($persistent = FALSE)
     {
@@ -168,7 +168,7 @@ class Driver extends DB_query_builder {
 				return $this->_mysqli;
 			}
 		}catch (\Exception $exception){
-			return $this->display_error($exception->getMessage());
+			$this->display_error($exception->getMessage());
 		}
 
 
@@ -264,6 +264,7 @@ class Driver extends DB_query_builder {
         {
             return true;
         }
+		return false;
     }
 
     public function importFile($file)
@@ -344,9 +345,7 @@ class Driver extends DB_query_builder {
     protected function _trans_begin()
     {
         $this->conn_id->autocommit(FALSE);
-        return is_php('5.5')
-            ? $this->conn_id->begin_transaction()
-            : $this->simple_query('START TRANSACTION'); // can also be BEGIN or BEGIN WORK
+		return $this->simple_query('TRANSACTION');
     }
 
     // --------------------------------------------------------------------
@@ -466,7 +465,7 @@ class Driver extends DB_query_builder {
      * Returns an object with field data
      *
      * @param	string	$table
-     * @return	array
+     * @return	array|bool
      */
     public function field_data($table)
     {
@@ -479,7 +478,7 @@ class Driver extends DB_query_builder {
         $retval = array();
         for ($i = 0, $c = count($query); $i < $c; $i++)
         {
-            $retval[$i]			= new stdClass();
+            $retval[$i]			= new \stdClass();
             $retval[$i]->name		= $query[$i]->Field;
 
             sscanf($query[$i]->Type, '%[a-z](%d)',
@@ -550,22 +549,40 @@ class Driver extends DB_query_builder {
     }
 
 
-    /* Deprecated */
+	/**
+	 * @return int
+	 * @deprecated
+	 */
     public function lastInsertId()
     {
         return $this->insert_id();
     }
 
+	/**
+	 * @param $var
+	 * @return string
+	 * @deprecated
+	 */
     public function real_escape_string($var)
     {
         return $this->_escape_str($var);
     }
 
+	/**
+	 * @param $q
+	 * @return mixed
+	 * @deprecated
+	 */
     public function fetch_array($q)
     {
         return $q->fetch_array();
     }
 
+	/**
+	 * @param $q
+	 * @return mixed
+	 * @deprecated
+	 */
     public function fetchOne($q)
     {
         $q = $this->query($q);
@@ -574,6 +591,11 @@ class Driver extends DB_query_builder {
         return $r;
     }
 
+	/**
+	 * @param $q
+	 * @return array|null
+	 * @deprecated
+	 */
     public function fetchRow($q)
     {
         $q = $this->query($q);

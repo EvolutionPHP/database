@@ -1,5 +1,5 @@
 <?php
-namespace Evolution\Components\DBLibrary;
+namespace EvolutionPHP\Database;
 
 /**
  * Database Forge Class
@@ -130,8 +130,7 @@ abstract class DB_forge {
 	 */
 	public function __construct()
 	{
-	    $this->db = \Evolution\Components\Database::connect();
-		log_message('info', 'Database Forge Class Initialized');
+	    $this->db = Database::connect();
 	}
 
 	// --------------------------------------------------------------------
@@ -372,7 +371,10 @@ abstract class DB_forge {
 		// Are indexes created from within the CREATE TABLE statement? (e.g. in MySQL)
 		if ($this->_create_table_keys === TRUE)
 		{
-			$columns .= $this->_process_indexes($table);
+			$indexes = current($this->_process_indexes($table));
+			if(is_string($indexes)){
+				$columns .= $indexes;
+			}
 		}
 
 		// _create_table will usually have the following format: "%s %s (%s\n)"

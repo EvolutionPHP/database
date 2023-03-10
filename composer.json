@@ -21,6 +21,7 @@
   },
   "require": {
     "php": ">=7.4",
-    "evolutionphp/exceptions": ">=1.0"
+    "evolutionphp/exceptions": ">=1.0",
+    "ext-mysqli": "*"
   }
 }

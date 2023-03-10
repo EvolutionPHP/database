@@ -1,8 +1,7 @@
 <?php
-namespace Evolution\Components\DBLibrary\Driver;
-use Evolution\Components\DBLibrary\DB_forge;
+namespace EvolutionPHP\Database\Library;
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+use EvolutionPHP\Database\DB_forge;
 
 /**
  * MySQLi Forge Class
