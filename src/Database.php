@@ -7,7 +7,7 @@ use EvolutionPHP\Database\Library\Driver;
 class Database
 {
 	static $instance;
-
+	static $connectionData;
 
 	public function test($data)
 	{
@@ -27,8 +27,8 @@ class Database
 			if(!is_array($data)){
 				throw new \ErrorException('Invalid configuration data.');
 			}
-
-			self::$instance = new Driver($data);
+			self::$connectionData = $data;
+			self::$instance = new Driver(self::$connectionData);
 		}
 		return self::$instance;
 	}

@@ -1,6 +1,8 @@
 <?php
 namespace EvolutionPHP\Database;
 
+use EvolutionPHP\Database\Library\Driver;
+
 /**
  * Database Forge Class
  *
@@ -124,13 +126,12 @@ abstract class DB_forge {
 
 	/**
 	 * Class constructor
-	 *
-	 * @param	object	&$db	Database object
+	 * @param $db_connection Driver
 	 * @return	void
 	 */
-	public function __construct()
+	public function __construct($db_connection)
 	{
-	    $this->db = Database::connect();
+	    $this->db = $db_connection;
 	}
 
 	// --------------------------------------------------------------------
