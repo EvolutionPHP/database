@@ -26,3 +26,7 @@ $q = $db->where('username','userdemos')
 if($q->num_rows() > 0){
 	print_r($q->row());
 }
+
+//Forge
+$forge = new \EvolutionPHP\Database\Library\Forge($db);
+$forge->drop_table('example', true);

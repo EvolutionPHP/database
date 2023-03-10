@@ -78,6 +78,59 @@ $this->db->insert('mytable', $data);  // Produces: INSERT INTO mytable (title, n
 ```
 For more information visit [CodeIgniter3 Query Builder](http://www.codeigniter.com/userguide3/database/query_builder.html)
 
+## Database Manipulation
+The Database Forge Class contains methods that help you manage your database.
+
+**Initializing the Forge Class**
+```php
+$forge = new \EvolutionPHP\Database\Library\Forge($db);
+```
+
+**Creating a table**
+Fields are created via an associative array. Within the array you must include a ‘type’ key that relates to the datatype of the field. For example, INT, VARCHAR, TEXT, etc. Many datatypes (for example VARCHAR) also require a ‘constraint’ key.
+```php
+$fields = array(
+        'blog_id' => array(
+                'type' => 'INT',
+                'constraint' => 5,
+                'unsigned' => TRUE,
+                'auto_increment' => TRUE
+        ),
+        'blog_title' => array(
+                'type' => 'VARCHAR',
+                'constraint' => '100',
+                'unique' => TRUE,
+        ),
+        'blog_author' => array(
+                'type' =>'VARCHAR',
+                'constraint' => '100',
+                'default' => 'King of Town',
+        ),
+        'blog_description' => array(
+                'type' => 'TEXT',
+                'null' => TRUE,
+        ),
+);
+$forge->add_field($fields);
+```
+
+Lets add keys
+
+```php
+$forge->add_key('blog_id', TRUE);
+// gives PRIMARY KEY `blog_id` (`blog_id`)
+
+$forge->add_key('blog_name');
+// gives KEY `blog_name` (`blog_name`)
+```
+
+Creating a table
+```php
+$forge->create_table('table_name', TRUE);
+// gives CREATE TABLE IF NOT EXISTS table_name
+```
+
+For more information visit [CodeIgniter3 Database Forge Class](https://codeigniter.com/userguide3/database/forge.html)
 
 ## Authors
 
