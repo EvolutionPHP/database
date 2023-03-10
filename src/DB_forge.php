@@ -371,7 +371,10 @@ abstract class DB_forge {
 		// Are indexes created from within the CREATE TABLE statement? (e.g. in MySQL)
 		if ($this->_create_table_keys === TRUE)
 		{
-			$indexes = current($this->_process_indexes($table));
+			$indexes = $this->_process_indexes($table);
+			if(is_array($indexes)){
+				$indexes = current($indexes);
+			}
 			if(is_string($indexes)){
 				$columns .= $indexes;
 			}
