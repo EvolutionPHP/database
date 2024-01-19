@@ -1,10 +1,7 @@
 <?php
+//error_reporting(-1);
+//ini_set('display_errors', 1);
 include __DIR__.DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'autoload.php';
-$exceptions = new \EvolutionPHP\Exceptions\Exceptions();
-$exceptions->register(true);
-$exceptions->add_logger([
-	'file_path' => __DIR__.'/logs/'
-]);
 $data = array(
 	'hostname' => 'localhost', //Database Hostname
 	'username' => 'root', //Database Username

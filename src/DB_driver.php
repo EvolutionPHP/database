@@ -1001,7 +1001,7 @@ abstract class DB_driver {
 	 *
 	 * @param	string|string[]	$str	Input string
 	 * @param	bool	$like	Whether or not the string will be used in a LIKE condition
-	 * @return	string
+	 * @return	string | array
 	 */
 	public function escape_str($str, $like = FALSE)
 	{
@@ -1056,7 +1056,31 @@ abstract class DB_driver {
 	 */
 	protected function _escape_str($str)
 	{
-		return str_replace("'", "''", remove_invisible_characters($str));
+		return str_replace("'", "''", $this->remove_invisible_characters($str));
+	}
+
+	protected function remove_invisible_characters($str, $url_encoded = TRUE)
+	{
+		$non_displayables = array();
+
+		// every control character except newline (dec 10),
+		// carriage return (dec 13) and horizontal tab (dec 09)
+		if ($url_encoded)
+		{
+			$non_displayables[] = '/%0[0-8bcef]/i';	// url encoded 00-08, 11, 12, 14, 15
+			$non_displayables[] = '/%1[0-9a-f]/i';	// url encoded 16-31
+			$non_displayables[] = '/%7f/i';	// url encoded 127
+		}
+
+		$non_displayables[] = '/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]+/S';	// 00-08, 11, 12, 14-31, 127
+
+		do
+		{
+			$str = preg_replace($non_displayables, '', $str, -1, $count);
+		}
+		while ($count);
+
+		return $str;
 	}
 
 	// --------------------------------------------------------------------
@@ -1243,7 +1267,7 @@ abstract class DB_driver {
 	 * Returns an object with field data
 	 *
 	 * @param	string	$table	the table name
-	 * @return	array
+	 * @return	array | bool
 	 */
 	public function field_data($table)
 	{
@@ -1580,7 +1604,7 @@ abstract class DB_driver {
 	 * @param	bool
 	 * @param	mixed
 	 * @param	bool
-	 * @return	string
+	 * @return	string | array
 	 */
 	public function protect_identifiers($item, $prefix_single = FALSE, $protect_identifiers = NULL, $field_exists = TRUE)
 	{
